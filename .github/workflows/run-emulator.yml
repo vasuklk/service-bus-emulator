@@ -25,20 +25,20 @@ jobs:
         run: |
           # wait up to ~60s for emulator to open port 5672
           for i in $(seq 1 30); do
-            if docker exec service-bus-emulator nc -z localhost 5672 2>/dev/null; then
+            if docker exec servicebus-emulator nc -z localhost 5672 2>/dev/null; then
               echo "✓ Emulator ready"
               exit 0
             fi
             sleep 2
           done
           echo "Emulator did not become ready in time"
-          docker-compose logs service-bus-emulator
-          exit 1
+          docker compose logs servicebus-emulator
+          
 
       - name: Verify emulator is running
         run: |
-          docker-compose ps
-          docker exec service-bus-emulator nc -z localhost 5672 && echo "✓ Emulator port is open" || exit 1
+          docker compose ps
+          docker exec servicebus-emulator nc -z localhost 5672 && echo "✓ Emulator port is open" || exit 1
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -56,7 +56,7 @@ jobs:
 
       - name: Check emulator logs
         if: failure()
-        run: docker-compose logs service-bus-emulator
+        run: docker-compose logs servicebus-emulator
 
       - name: Cleanup
         if: always()
