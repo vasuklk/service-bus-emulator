@@ -23,17 +23,9 @@ jobs:
 
       - name: Wait for emulator to be ready
         run: |
-          # wait up to 60s for emulator to open port 5672
-          for i in $(seq 1 30); do
-            if docker exec servicebus-emulator nc -z localhost 5672 2>/dev/null; then
-              echo "✓ Emulator ready"
-              exit 0
-            fi
-            sleep 2
-          done
-          echo "Emulator did not become ready in time"
-          docker compose logs servicebus-emulator
-          exit 1
+          echo "Waiting 1 minute for emulator to start..."
+          sleep 60
+          echo "✓ Wait complete"
 
       - name: Verify emulator is running
         run: |
