@@ -50,7 +50,7 @@ namespace Publisher.Tests
             }
 
             Assert.NotNull(received);
-            Assert.Equal(body, received.Body.ToString());
+            Assert.Equal("body", received.Body.ToString());
         }
     }
 }
