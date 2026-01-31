@@ -19,7 +19,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Start Service Bus Emulator
-        run: docker-compose up -d
+        run: docker compose up -d
 
       - name: Wait for emulator to be ready
         run: |
