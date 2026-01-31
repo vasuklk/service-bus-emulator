@@ -1,0 +1,63 @@
+name: Run Service Bus Emulator
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-emulator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Start Service Bus Emulator
+        run: docker-compose up -d
+
+      - name: Wait for emulator to be ready
+        run: |
+          # wait up to ~60s for emulator to open port 5672
+          for i in $(seq 1 30); do
+            if docker exec service-bus-emulator nc -z localhost 5672 2>/dev/null; then
+              echo "✓ Emulator ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Emulator did not become ready in time"
+          docker-compose logs service-bus-emulator
+          exit 1
+
+      - name: Verify emulator is running
+        run: |
+          docker-compose ps
+          docker exec service-bus-emulator nc -z localhost 5672 && echo "✓ Emulator port is open" || exit 1
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore NuGet packages
+        run: dotnet restore Publisher.Tests/Publisher.Tests.csproj
+
+      - name: Build tests project
+        run: dotnet build Publisher.Tests/Publisher.Tests.csproj --configuration Release --no-restore
+
+      - name: Run unit tests
+        run: dotnet test Publisher.Tests/Publisher.Tests.csproj --configuration Release --no-build --verbosity normal --logger "console;verbosity=detailed"
+
+      - name: Check emulator logs
+        if: failure()
+        run: docker-compose logs service-bus-emulator
+
+      - name: Cleanup
+        if: always()
+        run: docker-compose down -v
