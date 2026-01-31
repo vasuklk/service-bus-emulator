@@ -16,7 +16,7 @@ namespace Publisher.Tests
         {
             string connectionString = GetConnectionString();
             string topicName = "topic.1";
-            string subscriptionName = "admin-subscription";
+            string subscriptionName = "subscription.2";
             string body = $"test-message-{Guid.NewGuid()}";
 
             await using var client = new ServiceBusClient(connectionString);
@@ -24,6 +24,7 @@ namespace Publisher.Tests
             var messageId = Guid.NewGuid().ToString();
             var message1 = new ServiceBusMessage(body) { MessageId = messageId };
             message1.ApplicationProperties["UserType"] = "Admin";
+            message1.ApplicationProperties["UserRole"] = "Guest";
             var message2 = new ServiceBusMessage(body) { MessageId = messageId };
             message2.ApplicationProperties["UserType"] = "User";
             await sender.SendMessagesAsync(messages: new[] { message1, message2 });

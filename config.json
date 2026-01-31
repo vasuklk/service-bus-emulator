@@ -83,7 +83,21 @@
                   "ForwardDeadLetteredMessagesTo": "",
                   "ForwardTo": "",
                   "RequiresSession": false
-                }
+                },
+                "Rules": [
+                  {
+                    "Name": "sql-filter-1",
+                    "Properties": {
+                      "FilterType": "Sql",
+                      "SqlFilter": {
+                        "SqlExpression": "UserType = 'Admin' AND UserRole = 'Guest'"
+                      },
+                      "Action" : {
+                        "SqlExpression": "SET sys.To = 'Entity'"
+                      }
+                    }
+                  }
+                ]
               },
               {
                 "Name": "subscription.3",
