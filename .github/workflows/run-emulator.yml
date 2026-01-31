@@ -55,8 +55,8 @@ jobs:
 
       - name: Check emulator logs
         if: failure()
-        run: docker-compose logs servicebus-emulator
+        run: docker compose logs servicebus-emulator
 
       - name: Cleanup
         if: always()
-        run: docker-compose down -v
+        run: docker compose down -v
