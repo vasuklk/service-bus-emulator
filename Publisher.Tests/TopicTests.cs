@@ -14,7 +14,7 @@ namespace Publisher.Tests
         ServiceBusClient client = new ServiceBusClient(connectionString);
 
         [Fact]
-        public async Task SendAndMessage_ToTopic()
+        public async Task SendMessage_ToTopic()
         {
             
             string body = $"test-message";

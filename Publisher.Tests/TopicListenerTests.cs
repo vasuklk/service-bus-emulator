@@ -15,7 +15,7 @@ namespace Publisher.Tests
         private string connectionString = "Endpoint=sb://localhost;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;";
 
         private string topicName = "topic.1";
-        private string subscriptionName = "admin-subscription";
+        private string subscriptionName = "topiclistener-subscription";
 
         [Fact]
         public async Task TopicListener_ReceivesAndProcessesMessage()
@@ -33,7 +33,7 @@ namespace Publisher.Tests
             // Start the listener service
             var host = HostBuilder();
 
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
             var hostTask = host.StartAsync(cts.Token);
 
             try
@@ -46,7 +46,7 @@ namespace Publisher.Tests
                 {
                     MessageId = Guid.NewGuid().ToString()
                 };
-                message.ApplicationProperties["UserType"] = "Admin";
+                message.ApplicationProperties["MessageType"] = "TopicListener";
                 
                 await sender.SendMessageAsync(message);
 

@@ -12,14 +12,14 @@ var host = new HostBuilder()
         services.AddSingleton(sp => new TopicListenerService(
             connectionString,
             "topic.1",
-            "admin-subscription",
+            "topiclistener-subscription",
             sp.GetRequiredService<ILogger<TopicListenerService>>()
         ));
         services.AddHostedService(sp => sp.GetRequiredService<TopicListenerService>());
         services.AddSingleton(sp => new TopicPublisherService(
             connectionString,
             "topic.1",
-            "admin-subscription",
+            "topicpublisher-subscription",
             sp.GetRequiredService<ILogger<TopicPublisherService>>()
         ));
     })

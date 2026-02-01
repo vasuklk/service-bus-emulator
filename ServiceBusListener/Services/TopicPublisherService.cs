@@ -37,7 +37,7 @@ namespace ServiceBusListener.Services
                 {
                     MessageId = Guid.NewGuid().ToString()
                 };
-                message.ApplicationProperties["UserType"] = "Admin";
+                message.ApplicationProperties["MessageType"] = "TopicPublisher";
                 
                 await sender.SendMessageAsync(message);
                 PublishedMessages.Add(testMessage);

@@ -136,6 +136,58 @@
                     }
                   }
                 ]
+              },
+              {
+                "Name": "topiclistener-subscription",
+                "Properties": {
+                  "DeadLetteringOnMessageExpiration": false,
+                  "DefaultMessageTimeToLive": "PT1H",
+                  "LockDuration": "PT1M",
+                  "MaxDeliveryCount": 3,
+                  "ForwardDeadLetteredMessagesTo": "",
+                  "ForwardTo": "",
+                  "RequiresSession": false
+                },
+                "Rules": [
+                  {
+                    "Name": "sql-filter-1",
+                    "Properties": {
+                      "FilterType": "Sql",
+                      "SqlFilter": {
+                        "SqlExpression": "MessageType = 'TopicListener'"
+                      },
+                      "Action" : {
+                        "SqlExpression": "SET sys.To = 'Entity'"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "Name": "topicpublisher-subscription",
+                "Properties": {
+                  "DeadLetteringOnMessageExpiration": false,
+                  "DefaultMessageTimeToLive": "PT1H",
+                  "LockDuration": "PT1M",
+                  "MaxDeliveryCount": 3,
+                  "ForwardDeadLetteredMessagesTo": "",
+                  "ForwardTo": "",
+                  "RequiresSession": false
+                },
+                "Rules": [
+                  {
+                    "Name": "sql-filter-1",
+                    "Properties": {
+                      "FilterType": "Sql",
+                      "SqlFilter": {
+                        "SqlExpression": "MessageType = 'TopicPublisher'"
+                      },
+                      "Action" : {
+                        "SqlExpression": "SET sys.To = 'Entity'"
+                      }
+                    }
+                  }
+                ]
               }
             ]
           }

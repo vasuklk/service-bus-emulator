@@ -15,7 +15,7 @@ namespace Publisher.Tests
         private string connectionString = "Endpoint=sb://localhost;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;";
 
         private string topicName = "topic.1";
-        private string subscriptionName = "admin-subscription";
+        private string subscriptionName = "topicpublisher-subscription";
 
         [Fact]
         public async Task Topic_PublishMessage()
