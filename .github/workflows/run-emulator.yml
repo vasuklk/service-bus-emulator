@@ -42,12 +42,6 @@ jobs:
       - name: Build tests project - Publisher.Tests project
         run: dotnet build Publisher.Tests/Publisher.Tests.csproj --configuration Release --no-restore
 
-      # - name: Restore NuGet packages - ServiceBusListener project
-      #   run: dotnet restore ServiceBusListener/ServiceBusListener.csproj
-
-      # - name: Build tests project - ServiceBusListener project
-      #   run: dotnet build ServiceBusListener/ServiceBusListener.csproj --configuration Release --no-restore
-
       - name: Run unit tests
         run: dotnet test Publisher.Tests/Publisher.Tests.csproj --configuration Release --no-build --verbosity normal --logger "console;verbosity=detailed"
 

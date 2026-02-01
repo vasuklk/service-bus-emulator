@@ -16,6 +16,12 @@ var host = new HostBuilder()
             sp.GetRequiredService<ILogger<TopicListenerService>>()
         ));
         services.AddHostedService(sp => sp.GetRequiredService<TopicListenerService>());
+        services.AddSingleton(sp => new TopicPublisherService(
+            connectionString,
+            "topic.1",
+            "admin-subscription",
+            sp.GetRequiredService<ILogger<TopicPublisherService>>()
+        ));
     })
     .ConfigureLogging(logging =>
     {
@@ -23,5 +29,13 @@ var host = new HostBuilder()
         logging.SetMinimumLevel(LogLevel.Information);
     })
     .Build();
+
+// TopicPublisherService publisherService = new TopicPublisherService(
+//     connectionString,
+//     "topic.1",
+//     "admin-subscription",
+//     host.Services.GetRequiredService<ILogger<TopicPublisherService>>()
+// );
+// publisherService.ExecuteAsync(CancellationToken.None).GetAwaiter().GetResult();
 
 await host.RunAsync();
